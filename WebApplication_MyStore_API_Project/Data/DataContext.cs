@@ -5,11 +5,29 @@ namespace WebApplication_MyStore_API_Project.Data
 {
     public class DataContext : DbContext
     {
-        public DbSet<Product> Products { get; set; }
+        //public DataContext(DbContextOptions options) : base(options)
+        //{
+        //}
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        
+        public DataContext(DbContextOptions<DataContext> options) : base(options)
         {
-            optionsBuilder.UseSqlServer(@"Server=(localdb)\ProjectModels;Database=ProductsDB;Trusted_Connection=True;");
         }
+
+
+
+        public DbSet<Product> Products { get; set; }
+        public DbSet<CartItem> CartItems { get; set; }
+
+
     }
+
+
+    //public class ApplicationDbContext : IdentityDbContext<IdentityUser>
+    //{
+    //    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) :
+    //        base(options)
+    //    { }
+    //}
 }
+

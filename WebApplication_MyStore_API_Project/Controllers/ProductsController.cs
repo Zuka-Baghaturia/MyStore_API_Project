@@ -64,7 +64,7 @@ namespace WebApplication_MyStore_API_Project.Controllers
 
 
 
-//--------------------------------------------------------------------------------
+        //--------------------------------------------------------------------------------
 
 
 
@@ -154,7 +154,7 @@ namespace WebApplication_MyStore_API_Project.Controllers
 
 
 
-//--------------------------------------------------------------------------------
+        //--------------------------------------------------------------------------------
 
 
 
@@ -203,6 +203,60 @@ namespace WebApplication_MyStore_API_Project.Controllers
             return Ok(existingProduct);
         }
 
+
+
+
+
+
+
+
+
+
+
+        //--------------------------------------------------------------------------------
+
+
+
+
+        [HttpPatch("{ProductID}")]
+
+        public async Task<IActionResult> UpdateProductPartially(int ProductID, [FromForm] ProductDTO pDTO)
+        {
+
+            var product = await _context.Products.FindAsync(ProductID);
+
+            if (product == null)
+            {
+                return NotFound();
+            }
+
+
+            if (!string.IsNullOrWhiteSpace(pDTO.Title))
+            {
+                product.Title = pDTO.Title;
+            }
+
+
+            if (!string.IsNullOrWhiteSpace(pDTO.Category))
+            {
+                product.Category = pDTO.Category;
+            }
+
+
+            if (pDTO.Rating != 0)
+            {
+                product.Rating = pDTO.Rating;
+            }
+
+
+            if (pDTO.Price != 0)
+            {
+                product.Price = pDTO.Price;
+            }
+
+            await _context.SaveChangesAsync();
+            return Ok(product);
+        }
     }
 }
 
