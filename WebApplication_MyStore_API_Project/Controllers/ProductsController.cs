@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebApplication_MyStore_API_Project.Data;
 using WebApplication_MyStore_API_Project.DTO;
@@ -6,6 +7,7 @@ using WebApplication_MyStore_API_Project.Models;
 
 namespace WebApplication_MyStore_API_Project.Controllers
 {
+    [Authorize] 
     [Route("api/[controller]")]
     [ApiController]
     public class ProductsController : ControllerBase
@@ -66,8 +68,9 @@ namespace WebApplication_MyStore_API_Project.Controllers
 
         //--------------------------------------------------------------------------------
 
+        
 
-
+        [AllowAnonymous] 
 
         [HttpGet("Get-All-Products")]
 
@@ -79,6 +82,7 @@ namespace WebApplication_MyStore_API_Project.Controllers
 
 
 
+        [AllowAnonymous]
 
         [HttpGet("Get-Products-By-ID/{ProductID}")]
 
@@ -96,6 +100,7 @@ namespace WebApplication_MyStore_API_Project.Controllers
 
 
 
+        [AllowAnonymous]
 
         [HttpGet("Get-Products-By-Category/{ProductCategory}")]
 

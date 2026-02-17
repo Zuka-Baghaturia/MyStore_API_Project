@@ -5,11 +5,7 @@ namespace WebApplication_MyStore_API_Project.Data
 {
     public class DataContext : DbContext
     {
-        //public DataContext(DbContextOptions options) : base(options)
-        //{
-        //}
 
-        
         public DataContext(DbContextOptions<DataContext> options) : base(options)
         {
         }
@@ -23,11 +19,5 @@ namespace WebApplication_MyStore_API_Project.Data
     }
 
 
-    //public class ApplicationDbContext : IdentityDbContext<IdentityUser>
-    //{
-    //    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) :
-    //        base(options)
-    //    { }
-    //}
 }
 

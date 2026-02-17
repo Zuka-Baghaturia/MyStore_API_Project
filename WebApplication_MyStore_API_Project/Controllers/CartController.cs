@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebApplication_MyStore_API_Project.Data;
@@ -7,6 +8,7 @@ using WebApplication_MyStore_API_Project.Models;
 
 namespace WebApplication_MyStore_API_Project.Controllers
 {
+    [Authorize]
     [Route("Cart/[controller]")]
     [ApiController]
 
@@ -20,6 +22,11 @@ namespace WebApplication_MyStore_API_Project.Controllers
             _context = context;
         }
 
+
+//---------------------------------------
+
+        [AllowAnonymous]
+
         [HttpGet("Get-Cart")]
         public async Task<ActionResult> GetCart()
         {
@@ -29,6 +36,7 @@ namespace WebApplication_MyStore_API_Project.Controllers
 
 
 
+        [AllowAnonymous]
 
         [HttpGet("Get-Cart-Item-By-Id/{CartID}")]
 
@@ -42,6 +50,7 @@ namespace WebApplication_MyStore_API_Project.Controllers
             }
             return Ok(cartItem);
         }
+
 
         //------------------------------------
 
@@ -88,15 +97,10 @@ namespace WebApplication_MyStore_API_Project.Controllers
 
             if (existingCartItem != null)
             {
-                //existingCartItem.Quantity += dto.Quantity;
-
-
                 existingCartItem.Quantity += dto.Quantity;
                 existingCartItem.Title = product.Title;
                 existingCartItem.Price = product.Price;
                 existingCartItem.ImageUrl = product.ImageUrl;
-
-
             }
 
             else
