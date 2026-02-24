@@ -1,13 +1,14 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
 using WebApplication_MyStore_API_Project.Data;
 using WebApplication_MyStore_API_Project.DTO;
 using WebApplication_MyStore_API_Project.Models;
 
 namespace WebApplication_MyStore_API_Project.Controllers
 {
-    [Authorize] 
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class ProductsController : ControllerBase
@@ -16,10 +17,13 @@ namespace WebApplication_MyStore_API_Project.Controllers
 
         private readonly IWebHostEnvironment _env;
 
-        public ProductsController(DataContext context, IWebHostEnvironment env)
+        private readonly ILogger<ProductsController> _logger;
+
+        public ProductsController(DataContext context, IWebHostEnvironment env, ILogger<ProductsController> logger)
         {
             _context = context;
             _env = env;
+            _logger = logger;
         }
 
 
@@ -60,6 +64,8 @@ namespace WebApplication_MyStore_API_Project.Controllers
             _context.Products.Add(newProduct);
             await _context.SaveChangesAsync();
 
+            Log.Information("New Product Created => {@newProduct}", newProduct);
+
             return Ok(newProduct);
         }
 
@@ -68,15 +74,19 @@ namespace WebApplication_MyStore_API_Project.Controllers
 
         //--------------------------------------------------------------------------------
 
-        
 
-        [AllowAnonymous] 
+
+        [AllowAnonymous]
 
         [HttpGet("Get-All-Products")]
 
         public async Task<ActionResult> GetAllProducts()
         {
             var products = await _context.Products.ToListAsync();
+
+
+            Log.Information("All Products => {@products}", products);
+
             return Ok(products);
         }
 
@@ -151,6 +161,8 @@ namespace WebApplication_MyStore_API_Project.Controllers
 
             _context.Products.Remove(product);
 
+            Log.Information("Product deleted => {@products}", product);
+
             await _context.SaveChangesAsync();
 
             return NoContent();
@@ -203,6 +215,9 @@ namespace WebApplication_MyStore_API_Project.Controllers
             existingProduct.Category = pDTO.Category;
             existingProduct.Rating = pDTO.Rating;
             existingProduct.Price = pDTO.Price;
+
+            Log.Information("Product updated => {@products}", existingProduct);
+
             await _context.SaveChangesAsync();
 
             return Ok(existingProduct);

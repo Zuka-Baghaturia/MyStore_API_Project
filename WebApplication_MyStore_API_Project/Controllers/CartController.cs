@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
 using WebApplication_MyStore_API_Project.Data;
 using WebApplication_MyStore_API_Project.DTO;
 using WebApplication_MyStore_API_Project.Models;
@@ -31,6 +32,9 @@ namespace WebApplication_MyStore_API_Project.Controllers
         public async Task<ActionResult> GetCart()
         {
             var cartItems = await _context.CartItems.ToListAsync();
+
+            Log.Information("Cart products => {@products}", cartItems);
+
             return Ok(cartItems);
         }
 
@@ -70,6 +74,8 @@ namespace WebApplication_MyStore_API_Project.Controllers
 
 
             _context.CartItems.Remove(CartProducts);
+
+            Log.Information("Deleted from cart=> {@products}", CartProducts);
 
             await _context.SaveChangesAsync();
 
@@ -138,6 +144,8 @@ namespace WebApplication_MyStore_API_Project.Controllers
             }
 
             cartItem.Quantity = dto.Quantity;
+
+            Log.Information("Product cart updated=> {@products}", cartItem);
 
             await _context.SaveChangesAsync();
 

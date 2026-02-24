@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using Serilog;
 using WebApplication_MyStore_API_Project.Data;
 
 
@@ -83,6 +84,15 @@ builder.Services.AddCors(options =>
         policy.WithOrigins(allowedOrigins).AllowAnyHeader().AllowAnyMethod();
     });
 });
+
+
+Log.Logger = new LoggerConfiguration()
+    .MinimumLevel.Information()
+    .WriteTo.Console()
+    .WriteTo.File("logs/MyLogs-.txt", rollingInterval: RollingInterval.Day)
+    .CreateLogger();
+
+
 
 
 var app = builder.Build();
